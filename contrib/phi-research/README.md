@@ -42,6 +42,28 @@ unauthenticated API rate limit applies.
 The program prints JSON to standard output. Network failures exit nonzero.
 It does not write reports, modify the repository, or open pull requests.
 
+## CI on this fork
+
+The fork-only workflow at `.github/workflows/phi-research-ci.yml` is scoped
+to pushes to `phi-research` and the research directory. It uses a pinned
+GitHub-owned checkout action, read-only contents permission, no repository
+secrets, and 11 offline unit tests.
+
+A second, **non-blocking** job makes unauthenticated GET requests for two
+known public issues. Its result is separate from offline tests; GitHub API
+rate limiting or network failures must not be mistaken for a successful
+live smoke test. Inspect both job results.
+
+GitHub normally leaves Actions disabled on newly created forks. The owner
+may need to enable Actions in the fork's Actions tab. Merely committing a
+workflow does not prove GitHub ran it.
+
+## Isolated Bitcoin Core build gate
+
+See [BUILD_GUIDE.md](BUILD_GUIDE.md) for owner-run WSL2/Linux commands to
+compile and test Bitcoin Core without launching a mainnet node. Those CMake
+and CTest commands have **not** been executed as part of this experiment.
+
 ## Next gates
 
 1. Validate offline unit tests and capture one example triage run.
